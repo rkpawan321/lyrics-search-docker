@@ -1,0 +1,272 @@
+/* Global Styles */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.app {
+  text-align: center;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+/* Search Container Styles */
+.search-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.search-container h1 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  /* background-color: #0056b3; */
+}
+
+/* Radio Buttons */
+.radio-buttons {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.radio-label {
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer; /* Makes the label clickable */
+}
+
+.radio-buttons input[type="radio"] {
+  appearance: none; /* Hide the default radio button style */
+  width: 20px;
+  height: 20px;
+  border: 2px solid #007bff; /* Border for the radio button */
+  border-radius: 50%; /* Makes it round */
+  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s;
+  background-color: white; /* Default background */
+}
+
+.radio-buttons input[type="radio"]:checked {
+  background-color: #007bff; /* Blue when selected */
+  border-color: #0056b3; /* Darker border when selected */
+}
+
+.radio-buttons input[type="radio"]:hover {
+  border-color: #0056b3; /* Slightly darker border on hover */
+}
+
+/* Advanced Search Toggle */
+.advanced-toggle {
+  margin-top: 20px;
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  justify-content: center;
+}
+
+.toggle-container input[type="checkbox"] {
+  display: none; /* Hide the checkbox */
+}
+
+.slider {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.slider:before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+input[type="checkbox"]:checked + .slider {
+  background-color: #007bff;
+}
+
+input[type="checkbox"]:checked + .slider:before {
+  transform: translateX(26px);
+}
+
+.toggle-text {
+  font-size: 14px;
+  color: #333;
+}
+
+/* Spinner Styles */
+.spinner {
+  margin: 20px auto;
+  border: 4px solid #ddd;
+  border-top: 4px solid #007bff;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Results Section */
+/* Make results responsive */
+.results {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 100%;
+}
+
+/* Improve lyrics readability */
+.lyrics-container {
+  font-size: 16px;
+  line-height: 1.8;
+  word-wrap: break-word;
+}
+
+
+.result-tile {
+  background-color: #f0f0f0;
+  margin-bottom: 20px;
+  padding: 15px;
+  border-radius: 10px;
+  text-align: left;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.result-tile h3 {
+  margin: 0 0 10px;
+  color: #007bff;
+  font-size: 18px;
+}
+
+.result-tile h4 {
+  margin: 0 0 10px;
+  color: #555;
+  font-size: 16px;
+}
+
+.lyrics-container {
+  font-size: 14px;
+  color: #333;
+}
+
+.lyrics-container mark {
+  background-color: yellow;
+  font-weight: bold;
+}
+
+/* Modal Popup */
+.lyrics-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  max-width: 600px;
+  width: 90%;
+  max-height: 80%;
+  overflow-y: auto;
+}
+
+.modal-content h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.close-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 18px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: black
+}
+
+.lyrics-line-by-line {
+  font-size: 16px;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+.view-lyrics-btn {
+  background-color: transparent;
+  border: none;
+  color: #007bff;
+  cursor: pointer;
+  text-decoration: underline;
+  font-size: 14px;
+}
+
+.view-lyrics-btn:hover {
+  color: #0056b3;
+}
