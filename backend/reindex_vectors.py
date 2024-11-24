@@ -4,9 +4,13 @@ from sentence_transformers import SentenceTransformer
 
 # Elasticsearch setup without authentication
 es = Elasticsearch(
-    hosts=["http://elasticsearch:9200"],  # Use service name from docker-compose
+    # hosts=["http://elasticsearch:9200"],  # Use service name from docker-compose
+    hosts=["http://localhost:9200"],
     verify_certs=False
 )
+
+# Index name
+INDEX_NAME = "songs_with_vectors"
 
 # Load SentenceTransformer model
 model = SentenceTransformer('all-MiniLM-L6-v2')
@@ -14,6 +18,36 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 # Path to the CSV file
 data_file = "../data/english_songs_and_lyrics.csv"
 df = pd.read_csv(data_file)
+
+# Delete the index if it exists
+if es.indices.exists(index=INDEX_NAME):
+    es.indices.delete(index=INDEX_NAME)
+    print(f"Deleted existing index '{INDEX_NAME}'.")
+
+# Create index with the correct mapping
+mapping = {
+    "mappings": {
+        "properties": {
+            "title": {
+                "type": "text"
+            },
+            "artist": {
+                "type": "text"
+            },
+            "lyrics": {
+                "type": "text"
+            },
+            "vector_field": {
+                "type": "dense_vector",
+                "dims": 384  # Adjust based on your model's vector size
+            }
+        }
+    }
+}
+
+# Create the index with the mapping
+es.indices.create(index=INDEX_NAME, body=mapping)
+print(f"Created index '{INDEX_NAME}' with the correct mapping.")
 
 # Define chunk size
 chunk_size = 1000  # Adjust the chunk size as needed
@@ -35,7 +69,7 @@ for chunk_idx, chunk_start in enumerate(range(0, len(df), chunk_size)):
 
         # Prepare Elasticsearch document
         actions.append({
-            "_index": "songs_with_vectors",
+            "_index": INDEX_NAME,
             "_source": {
                 "title": title,
                 "artist": artist,
