@@ -135,6 +135,7 @@ def semantic_search(request):
         return JsonResponse({'error': str(e)}, status=500)
 
 # Vector Search using POST
+# Vector Search using POST
 @csrf_exempt
 def vector_search(request):
     if request.method != "POST":
