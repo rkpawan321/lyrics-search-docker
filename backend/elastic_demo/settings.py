@@ -82,7 +82,8 @@ DATABASES = {
 # Elasticsearch configuration
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'https://elasticsearch:9200',
+        'hosts': 'http://elasticsearch:9200',
+        
         # 'http_auth': ('elastic', 'PO0IlHE4wxZwiqL+F5Yd'),
         'verify_certs': False,  # Disable SSL verification for local
     }

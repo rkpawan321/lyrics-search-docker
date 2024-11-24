@@ -6,7 +6,7 @@ import json
 
 # Initialize Elasticsearch client
 es = Elasticsearch(
-    hosts=["https://elasticsearch:9200"],
+    hosts=["http://elasticsearch:9200"],
     # basic_auth=("elastic", "PO0IlHE4wxZwiqL+F5Yd"),
     verify_certs=False
 )
