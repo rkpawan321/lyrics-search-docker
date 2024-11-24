@@ -24,7 +24,27 @@ if es.indices.exists(index=INDEX_NAME):
     es.indices.delete(index=INDEX_NAME)
     print(f"Deleted existing index '{INDEX_NAME}'.")
 
-# Create index with the correct mapping
+# # Create index with the correct mapping
+# mapping = {
+#     "mappings": {
+#         "properties": {
+#             "title": {
+#                 "type": "text"
+#             },
+#             "artist": {
+#                 "type": "text"
+#             },
+#             "lyrics": {
+#                 "type": "text"
+#             },
+#             "vector_field": {
+#                 "type": "dense_vector",
+#                 "dims": 384  # Adjust based on your model's vector size
+#             }
+#         }
+#     }
+# }
+
 mapping = {
     "mappings": {
         "properties": {
@@ -39,11 +59,14 @@ mapping = {
             },
             "vector_field": {
                 "type": "dense_vector",
-                "dims": 384  # Adjust based on your model's vector size
+                "dims": 384,  # Adjust based on your model's vector size
+                "index": True,  # Enable indexing for KNN search
+                "similarity": "l2_norm"  # Specify similarity metric (optional)
             }
         }
     }
 }
+
 
 # Create the index with the mapping
 es.indices.create(index=INDEX_NAME, body=mapping)
