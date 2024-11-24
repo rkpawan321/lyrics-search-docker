@@ -135,7 +135,6 @@ def semantic_search(request):
         return JsonResponse({'error': str(e)}, status=500)
 
 # Vector Search using POST
-# Vector Search using POST
 @csrf_exempt
 def vector_search(request):
     if request.method != "POST":
@@ -147,34 +146,29 @@ def vector_search(request):
         if not query_vector or not isinstance(query_vector, list):
             return JsonResponse({'error': 'Invalid or missing vector in payload'}, status=400)
 
-        # Debug logging
-        print("Query Vector Length:", len(query_vector))
-        print("First 5 Vector Values:", query_vector[:5])
-
-        # Ensure vector is float type
+        # Ensure the vector is of type float
         query_vector = [float(v) for v in query_vector]
 
+        # Elasticsearch KNN query
         body = {
             "size": 10,
             "_source": ["title", "artist", "lyrics"],
-            "query": {
-                "knn": {
-                    "field": "vector_field",
-                    "query_vector": query_vector,
-                    "k": 10,
-                    "num_candidates": 100
-                }
+            "knn": {  # Use the knn body parameter
+                "field": "vector_field",  # Name of the field in Elasticsearch
+                "query_vector": query_vector,
+                "k": 10,
+                "num_candidates": 100
             }
         }
 
         response = es.search(index="songs_with_vectors", body=body)
         hits = response['hits']['hits']
-        
+
         return JsonResponse({
             'results': [
                 {
-                    'title': hit['_source']['title'], 
-                    'artist': hit['_source']['artist'], 
+                    'title': hit['_source']['title'],
+                    'artist': hit['_source']['artist'],
                     'lyrics': hit['_source']['lyrics'],
                     'score': hit['_score']
                 }
@@ -182,11 +176,11 @@ def vector_search(request):
             ]
         })
     except Exception as e:
-        print(f"Full Error in vector_search: {e}")
-        # If possible, print the full traceback
+        print(f"Error in vector_search: {e}")
         import traceback
         traceback.print_exc()
         return JsonResponse({'error': str(e)}, status=500)
+
 @csrf_exempt
 def generate_vector(request):
     if request.method != "POST":
