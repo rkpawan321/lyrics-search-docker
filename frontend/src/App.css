@@ -2,12 +2,13 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background-color: #f9f9f9;
+  background-color: #bac0c3;
   color: #333;
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .app {
@@ -16,15 +17,20 @@ body {
   max-width: 800px;
   margin: auto;
   padding: 20px;
+  box-sizing: border-box;
 }
 
 /* Search Container Styles */
 .search-container {
-  background-color: #fff;
-  padding: 20px;
+  background-color: #8eefd4;
+  padding: 25px; /* Slightly increased padding */
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   text-align: center;
+  width: 100%;
+  max-width: 500px; /* Increased max width for desktop */
+  margin: 20px auto; /* Center and add spacing on the top and bottom */
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 .search-container h1 {
@@ -34,16 +40,16 @@ body {
 
 input[type="text"] {
   width: 100%;
-  padding: 10px;
-  font-size: 16px;
+  padding: 15px; /* Increased padding for a taller input field */
+  font-size: 18px; /* Slightly increased font size */
   margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  box-sizing: border-box;
+  box-sizing: border-box; /* Include padding in width calculation */
 }
 
 button {
-  padding: 10px 20px;
+  padding: 12px 24px; /* Increased button padding for a larger button */
   font-size: 16px;
   background-color: #007bff;
   color: #fff;
@@ -53,7 +59,7 @@ button {
 }
 
 button:hover {
-  /* background-color: #0056b3; */
+  background-color: #0056b3;
 }
 
 /* Radio Buttons */
@@ -62,6 +68,7 @@ button:hover {
   display: flex;
   justify-content: center;
   gap: 20px;
+  flex-wrap: wrap;
 }
 
 .radio-label {
@@ -69,28 +76,28 @@ button:hover {
   display: flex;
   align-items: center;
   gap: 10px;
-  cursor: pointer; /* Makes the label clickable */
+  cursor: pointer;
 }
 
 .radio-buttons input[type="radio"] {
-  appearance: none; /* Hide the default radio button style */
+  appearance: none;
   width: 20px;
   height: 20px;
-  border: 2px solid #007bff; /* Border for the radio button */
-  border-radius: 50%; /* Makes it round */
+  border: 2px solid #007bff;
+  border-radius: 50%;
   outline: none;
   cursor: pointer;
   transition: background-color 0.3s, border-color 0.3s;
-  background-color: white; /* Default background */
+  background-color: white;
 }
 
 .radio-buttons input[type="radio"]:checked {
-  background-color: #007bff; /* Blue when selected */
-  border-color: #0056b3; /* Darker border when selected */
+  background-color: #007bff;
+  border-color: #0056b3;
 }
 
 .radio-buttons input[type="radio"]:hover {
-  border-color: #0056b3; /* Slightly darker border on hover */
+  border-color: #0056b3;
 }
 
 /* Advanced Search Toggle */
@@ -106,7 +113,7 @@ button:hover {
 }
 
 .toggle-container input[type="checkbox"] {
-  display: none; /* Hide the checkbox */
+  display: none;
 }
 
 .slider {
@@ -163,7 +170,6 @@ input[type="checkbox"]:checked + .slider:before {
 }
 
 /* Results Section */
-/* Make results responsive */
 .results {
   margin-top: 20px;
   display: flex;
@@ -172,17 +178,14 @@ input[type="checkbox"]:checked + .slider:before {
   max-width: 100%;
 }
 
-/* Improve lyrics readability */
 .lyrics-container {
   font-size: 16px;
   line-height: 1.8;
   word-wrap: break-word;
 }
 
-
 .result-tile {
   background-color: #f0f0f0;
-  margin-bottom: 20px;
   padding: 15px;
   border-radius: 10px;
   text-align: left;
@@ -249,7 +252,7 @@ input[type="checkbox"]:checked + .slider:before {
   background: none;
   border: none;
   cursor: pointer;
-  color: black
+  color: black;
 }
 
 .lyrics-line-by-line {
@@ -269,4 +272,141 @@ input[type="checkbox"]:checked + .slider:before {
 
 .view-lyrics-btn:hover {
   color: #0056b3;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .app {
+    padding: 10px;
+  }
+
+  .search-container {
+    width: 95%;
+    padding: 15px;
+    box-sizing: border-box; /* Ensure padding is included in width */
+    box-shadow: none;
+    margin: 0 auto; /* Center horizontally */
+  }
+
+  input[type="text"] {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  button {
+    font-size: 14px;
+    padding: 8px 16px;
+  }
+
+  .radio-buttons {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .results {
+    gap: 15px;
+  }
+
+  .result-tile {
+    padding: 10px;
+  }
+
+  .result-tile h3 {
+    font-size: 16px;
+  }
+
+  .result-tile h4 {
+    font-size: 14px;
+  }
+
+  .lyrics-container {
+    font-size: 12px;
+  }
+
+  .view-lyrics-btn {
+    font-size: 12px;
+  }
+
+  .modal-content {
+    padding: 15px;
+  }
+
+  .close-btn {
+    font-size: 16px;
+  }
+
+  .lyrics-line-by-line {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  .search-container {
+    padding: 15px;
+    width: 95%;
+    max-width: 350px; /* Constrain width for very small screens */
+    box-sizing: border-box; /* Ensure padding is included in width */
+    margin: 0 auto; /* Center horizontally */
+  }
+
+  input[type="text"] {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  button {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+
+  .radio-label {
+    font-size: 12px;
+  }
+
+  .toggle-container {
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .slider {
+    width: 40px;
+    height: 20px;
+  }
+
+  .slider:before {
+    width: 16px;
+    height: 16px;
+  }
+
+  .results {
+    gap: 10px;
+  }
+
+  .result-tile {
+    padding: 10px;
+  }
+
+  .result-tile h3 {
+    font-size: 14px;
+  }
+
+  .result-tile h4 {
+    font-size: 12px;
+  }
+
+  .lyrics-container {
+    font-size: 10px;
+  }
+
+  .view-lyrics-btn {
+    font-size: 10px;
+  }
+
+  .modal-content {
+    padding: 10px;
+  }
+
+  .lyrics-line-by-line {
+    font-size: 12px;
+  }
 }

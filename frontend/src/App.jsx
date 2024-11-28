@@ -13,6 +13,8 @@ const App = () => {
   const [selectedLyrics, setSelectedLyrics] = useState("");
   const [noResults, setNoResults] = useState(false);
 
+  const BACKEND_URL = "https://lyrics-search-backend-572081148214.us-central1.run.app/";
+
   useEffect(() => {
     setSemanticSearchDone(false);
     if (!query) {
@@ -41,7 +43,7 @@ const App = () => {
           // Generate vector for the query
           console.log("Generating vector for query:", query);
           const vectorResponse = await axios.post(
-            "http://127.0.0.1:8000/generate-vector/",
+            `${BACKEND_URL}/generate-vector/`,
             { q: query }
           );
           console.log("Vector Response:", vectorResponse.data);
@@ -58,11 +60,11 @@ const App = () => {
 
       let response;
       if (method === "GET") {
-        response = await axios.get(`http://127.0.0.1:8000${endpoint}`, {
+        response = await axios.get(`${BACKEND_URL}${endpoint}`, {
           params,
         });
       } else {
-        response = await axios.post(`http://127.0.0.1:8000${endpoint}`, params);
+        response = await axios.post(`${BACKEND_URL}${endpoint}`, params);
       }
 
       console.log("Search Results:", response.data.results);
