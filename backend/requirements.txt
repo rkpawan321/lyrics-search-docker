@@ -9,3 +9,6 @@ python-dotenv
 kaggle
 django-cors-headers==3.14.0
 huggingface_hub==0.10.1
+google-cloud-storage
+gunicorn==20.1.0
+

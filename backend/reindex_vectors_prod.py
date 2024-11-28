@@ -1,58 +1,40 @@
-import pandas as pd
 from elasticsearch import Elasticsearch, helpers
 from sentence_transformers import SentenceTransformer
-from google.cloud import storage
-import os
+import pandas as pd
 
-# Elasticsearch setup without authentication
+# Elasticsearch Cloud setup
+ELASTIC_CLOUD_ID = "03f2e51817714e24b3ef132dc10054e7:dXMtY2VudHJhbDEuZ2NwLmNsb3VkLmVzLmlvJDAzMDE2YzMxNGZmYTQ4ZmU5NzU0ODVkYWM1YjkwZDUzJGIwM2M3NzQ4NWNiZTRkN2U4ZTM2YzNmZjc3ODE4Zjdj"
+API_KEY = "bExCVlk1TUJVTklhV00xbHVyUG86aWwyYXpUdVBRWUdqVFcxR2NMR2JHZw==s"
+
 es = Elasticsearch(
-    hosts=["http://localhost:9200"],
-    verify_certs=False
+    cloud_id=ELASTIC_CLOUD_ID,
+    api_key=API_KEY
 )
 
 # Index name
 INDEX_NAME = "songs_with_vectors"
 
+# Path to the CSV file
+LOCAL_CSV_PATH = "../data/english_songs_and_lyrics.csv"  # Update this path to where your data file resides
+
 # Load SentenceTransformer model
 model = SentenceTransformer('all-MiniLM-L6-v2')
 
-# Function to download file from Google Cloud Storage
-def download_file_from_gcs(bucket_name, source_blob_name, destination_file_name):
-    client = storage.Client()
-    bucket = client.bucket(bucket_name)
-    blob = bucket.blob(source_blob_name)
-    blob.download_to_filename(destination_file_name)
-    print(f"Downloaded {source_blob_name} from bucket {bucket_name} to {destination_file_name}.")
-
-# GCS bucket details
-BUCKET_NAME = "lyrics-search-data"  # Replace with your bucket name
-SOURCE_BLOB_NAME = "data/english_songs_and_lyrics.csv"  # File path in the bucket
-LOCAL_FILE_NAME = "english_songs_and_lyrics.csv"  # Temporary local file name
-
-# Download CSV from GCS
-download_file_from_gcs(BUCKET_NAME, SOURCE_BLOB_NAME, LOCAL_FILE_NAME)
-
-# Load the CSV into a Pandas DataFrame
-df = pd.read_csv(LOCAL_FILE_NAME)
+# Load the CSV data
+df = pd.read_csv(LOCAL_CSV_PATH)
 
 # Delete the index if it exists
 if es.indices.exists(index=INDEX_NAME):
     es.indices.delete(index=INDEX_NAME)
     print(f"Deleted existing index '{INDEX_NAME}'.")
 
-# Create index with the correct mapping
+# Define the index mapping
 mapping = {
     "mappings": {
         "properties": {
-            "title": {
-                "type": "text"
-            },
-            "artist": {
-                "type": "text"
-            },
-            "lyrics": {
-                "type": "text"
-            },
+            "title": {"type": "text"},
+            "artist": {"type": "text"},
+            "lyrics": {"type": "text"},
             "vector_field": {
                 "type": "dense_vector",
                 "dims": 384,  # Adjust based on your model's vector size
@@ -63,15 +45,14 @@ mapping = {
     }
 }
 
-# Create the index with the mapping
+# Create the index
 es.indices.create(index=INDEX_NAME, body=mapping)
 print(f"Created index '{INDEX_NAME}' with the correct mapping.")
 
-# Define chunk size
+# Process data in chunks
 chunk_size = 1000  # Adjust the chunk size as needed
 total_chunks = len(df) // chunk_size + 1
 
-# Process data in chunks
 for chunk_idx, chunk_start in enumerate(range(0, len(df), chunk_size)):
     chunk = df.iloc[chunk_start:chunk_start + chunk_size]
 
@@ -104,7 +85,3 @@ for chunk_idx, chunk_start in enumerate(range(0, len(df), chunk_size)):
         print(f"Error uploading chunk {chunk_idx + 1}: {e}")
 
 print("Data indexing completed!")
-
-# Clean up local file
-os.remove(LOCAL_FILE_NAME)
-print(f"Deleted temporary file: {LOCAL_FILE_NAME}")

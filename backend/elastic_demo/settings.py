@@ -11,22 +11,19 @@ https://docs.djangoproject.com/en/3.2/ref/settings/
 """
 
 from pathlib import Path
+import os
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# General Settings
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
+DEBUG = os.getenv("DEBUG", "False") == "True"  # Set DEBUG=False for production
+SECRET_KEY = os.getenv("SECRET_KEY", "django-insecure-@hc0x+a$*xe*nl@p!us2dz5sc385!7f8m5fnc914z!k9w^m7nw")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "*").split(",")  # Use "*" for testing; restrict for production
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-@hc0x+a$*xe*nl@p!us2dz5sc385!7f8m5fnc914z!k9w^m7nw'
+# Cloud Run Port (default to 8080)
+PORT = os.getenv("PORT", "8000")  # Default to 8000 if not provided
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
-
-# Application definition
+# Application Definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -70,8 +67,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'elastic_demo.wsgi.application'
 
-# Database
-# https://docs.djangoproject.com/en/3.2/ref/settings/#databases
+# Database Configuration
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -79,18 +75,19 @@ DATABASES = {
     }
 }
 
-# Elasticsearch configuration
+# Elasticsearch Configuration
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': 'http://elasticsearch:9200',
-        
-        # 'http_auth': ('elastic', 'PO0IlHE4wxZwiqL+F5Yd'),
-        'verify_certs': False,  # Disable SSL verification for local
+        'hosts': "https://03016c314ffa48fe975485dac5b90d53.us-central1.gcp.cloud.es.io:443",
+        'api_key': "M2l0cGI1TUJ0ZUxxOTJBZ0UxdkE6OHI4QW9pOWJTR2FMQ2J6YmFLVS1JUQ=="
+        # (
+        #     # os.getenv("ELASTICSEARCH_USERNAME", "elastic"),
+        #     os.getenv("ELASTICSEARCH_API_KEY", "M2l0cGI1TUJ0ZUxxOTJBZ0UxdkE6OHI4QW9pOWJTR2FMQ2J6YmFLVS1JUQ==")
+        # )
     }
 }
 
-# Password validation
-# https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators
+# Password Validation
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -99,38 +96,30 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # Internationalization
-# https://docs.djangoproject.com/en/3.2/topics/i18n/
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.2/howto/static-files/
+# Static Files
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATICFILES_STORAGE = 'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+# CORS Settings
+CORS_ALLOWED_ORIGINS = [
+    "http://127.0.0.1:3000",  # Local Frontend
+    "http://localhost:3000",
+    "https://lyrics-search-frontend-572081148214.us-central1.run.app",  # Deployed frontend
+]
+
+# CSRF Settings
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:3000",  # Local Frontend
+    "http://localhost:3000",
+    "https://lyrics-search-frontend-572081148214.us-central1.run.app",  # Deployed frontend
+]
 
 # Default primary key field type
-# https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
-
-# Cross-Origin Resource Sharing (CORS) settings
-CORS_ALLOWED_ORIGINS = [
-    "http://127.0.0.1:3000",  # Frontend
-    "http://localhost:3000",
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    "http://127.0.0.1:3000",  # Frontend
-    "http://localhost:3000",
-]
-
-# Disable CSRF checks for development purposes (Optional)
-# Only uncomment this for local testing
-# CSRF_COOKIE_SECURE = False
-# SESSION_COOKIE_SECURE = False
-# CSRF_USE_SESSIONS = True

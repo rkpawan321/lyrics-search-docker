@@ -6,9 +6,12 @@ import json
 
 # Initialize Elasticsearch client
 es = Elasticsearch(
-    hosts=["http://elasticsearch:9200"],
-    # basic_auth=("elastic", "PO0IlHE4wxZwiqL+F5Yd"),
-    verify_certs=False
+    # hosts=["http://elasticsearch:9200"],
+    # # basic_auth=("elastic", "PO0IlHE4wxZwiqL+F5Yd"),
+    # verify_certs=False
+    hosts= ["https://03016c314ffa48fe975485dac5b90d53.us-central1.gcp.cloud.es.io:443"],
+    # http_auth= ('elastic', 'bExCVlk1TUJVTklhV00xbHVyUG86aWwyYXpUdVBRWUdqVFcxR2NMR2JHZw=='),  # Use your API Key
+    api_key= "M2l0cGI1TUJ0ZUxxOTJBZ0UxdkE6OHI4QW9pOWJTR2FMQ2J6YmFLVS1JUQ=="
 )
 
 # Load the pre-trained model (ensure it's already downloaded)
