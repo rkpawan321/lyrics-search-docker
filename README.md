@@ -3,6 +3,9 @@
 ## **Overview**
 The Lyrics Search Engine is a web-based application that allows users to search for song lyrics using different search methods. The app is powered by a Django backend integrated with Elasticsearch and a React frontend.
 
+## DEMO: https://lyrics-search-frontend-572081148214.us-central1.run.app/
+The frontend, backend with elasticsearch are hosted on GCP.
+
 ## **Features**
 1. **Level 1: Lexical Search**  
    - Searches based on exact matches of words in song lyrics, title, or artist name.
